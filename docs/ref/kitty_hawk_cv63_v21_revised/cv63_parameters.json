@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "model": "USS Kitty Hawk CV-63 / Three.js study V2.1",
+    "units": "meter",
+    "coordinateSystem": "-X port, +X starboard, +Y up, -Z bow, +Z stern; plan positive P toward bow",
+    "accuracy": "Approximate visual reconstruction. Not shipyard CAD or an exact historical refit."
+  },
+  "dimensions": { "hullLength": 318, "hullBeam": 39.5, "draft": 10.9, "deckMaxSectionWidth": 76.8 },
+  "deck": { "topY": 12.2, "thickness": 1.2, "landingAngleDeg": 11.2, "stripHalfWidth": 11.5, "textureSeed": 63 },
+  "hull": {
+    "longitudinalSegments": 96,
+    "stations": [[-157,11.6],[-148,14.4],[-128,17.9],[-100,19.15],[-60,19.75],[0,19.75],[45,19.7],[85,18.4],[115,15.2],[141,8.3],[156,2.4],[161,0.4]]
+  },
+  "elevators": [
+    {"id":"Elevator_1_Stbd_Fwd","side":"stbd","x":30.5,"p":63,"w":11.3,"len":19.6,"maxDrop":8},
+    {"id":"Elevator_2_Stbd_Mid","side":"stbd","x":32.0,"p":14,"w":11.8,"len":19.6,"maxDrop":8},
+    {"id":"Elevator_3_Stbd_Aft","side":"stbd","x":29.0,"p":-71,"w":10.2,"len":19.6,"maxDrop":8},
+    {"id":"Elevator_4_Port_Aft","side":"port","x":-20.0,"p":-103,"w":9.5,"len":19.6,"maxDrop":8}
+  ],
+  "island": { "x": 29.5, "p": -26 },
+  "materials": { "hull": 9018022, "deck": 3168064, "support": 6715781, "red": 8140603, "black": 2501939, "window": 1982034 }
+}

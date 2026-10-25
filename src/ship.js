@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { BLOCK_IDS, SHIP } from "./model/constants.js";
+import { BLOCK_IDS, CATAPULTS, ELEVATORS, ISLAND, SHIP } from "./model/constants.js";
 import { createMaterials } from "./model/materials.js";
 import { buildHull } from "./model/hull.js";
 import { buildFlightDeck } from "./model/flightdeck.js";
@@ -75,7 +75,7 @@ export const SHIP_LABELS = [
     groupId: "flightdeck",
     title: "飞行甲板",
     en: "FLIGHT DECK",
-    position: [-32, SHIP.deckY + 3.2, 76],
+    position: [-30, SHIP.deckY + 3.2, 74],
     side: "left",
     minExplode: 0,
   },
@@ -83,7 +83,7 @@ export const SHIP_LABELS = [
     groupId: "island",
     title: "舰岛",
     en: "ISLAND / RADAR",
-    position: [31, 53, -45],
+    position: [ISLAND.x + 2, SHIP.deckY + 34, ISLAND.z],
     side: "right",
     minExplode: 0,
   },
@@ -91,7 +91,7 @@ export const SHIP_LABELS = [
     groupId: "airwing",
     title: "舰载机联队",
     en: "CARRIER AIR WING",
-    position: [20, SHIP.deckY + 7, -112],
+    position: [16, SHIP.deckY + 7, -104],
     side: "left",
     minExplode: 0,
   },
@@ -99,7 +99,7 @@ export const SHIP_LABELS = [
     groupId: "elevators",
     title: "升降机",
     en: "DECK-EDGE ELEVATOR",
-    position: [33, 24, 111],
+    position: [ELEVATORS[2].x + 3, SHIP.deckY + 4, ELEVATORS[2].z],
     side: "right",
     minExplode: 0.38,
     secondary: true,
@@ -108,7 +108,7 @@ export const SHIP_LABELS = [
     groupId: "flightdeck",
     title: "弹射器",
     en: "STEAM CATAPULT",
-    position: [-7, SHIP.deckY + 2.6, -124],
+    position: [CATAPULTS[0].start[0] + 4, SHIP.deckY + 2.6, CATAPULTS[0].start[1] - 24],
     side: "left",
     minExplode: 0.48,
     secondary: true,
@@ -116,8 +116,8 @@ export const SHIP_LABELS = [
   {
     groupId: "flightdeck",
     title: "斜角甲板",
-    en: "9° ANGLED DECK",
-    position: [-36, SHIP.deckY + 2.6, 128],
+    en: `${SHIP.landingAngleDeg}° ANGLED DECK`,
+    position: [-24, SHIP.deckY + 2.6, 112],
     side: "left",
     minExplode: 0.44,
     secondary: true,
@@ -143,7 +143,7 @@ export const SHIP_LABELS = [
     groupId: "weapons",
     title: "近防武备",
     en: "CLOSE-IN DEFENSE",
-    position: [36, 27, 140],
+    position: [ISLAND.x + 6, SHIP.deckY + 6, 132],
     side: "right",
     minExplode: 0.55,
     secondary: true,

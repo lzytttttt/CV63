@@ -12,7 +12,7 @@ import { Animator } from "./anim/animator.js";
 import { createSequences } from "./anim/sequences.js";
 import { buildSea } from "./model/sea.js";
 import { createEffects } from "./anim/effects.js";
-import { SHIP, DECK_OUTLINE, ELEVATORS, ISLAND, ANGLED_DECK, CATAPULTS } from "./model/constants.js";
+import { SHIP, DECK_BOUNDS, DECK_OUTLINE, ELEVATORS, ISLAND, ANGLED_DECK, CATAPULTS } from "./model/constants.js";
 
 /* ══════════════════════════════════════════════════════════════
    DOM / GLOBAL STATE
@@ -327,10 +327,10 @@ function buildWorkbench() {
   const dimensionY = -25;
   const dimensionX = 54;
   const dimensionPoints = [
-    new THREE.Vector3(dimensionX, dimensionY, -162),
-    new THREE.Vector3(dimensionX, dimensionY, 162),
+    new THREE.Vector3(dimensionX, dimensionY, SHIP.bowZ),
+    new THREE.Vector3(dimensionX, dimensionY, SHIP.sternZ),
   ];
-  for (let z = -160; z <= 160; z += 20) {
+  for (let z = Math.ceil(SHIP.bowZ / 20) * 20; z <= Math.floor(SHIP.sternZ / 20) * 20; z += 20) {
     const length = z % 100 === 0 ? 3.2 : 1.7;
     dimensionPoints.push(
       new THREE.Vector3(dimensionX - length, dimensionY, z),
@@ -338,10 +338,10 @@ function buildWorkbench() {
     );
   }
   dimensionPoints.push(
-    new THREE.Vector3(dimensionX - 2.4, dimensionY - 3.2, -162),
-    new THREE.Vector3(dimensionX + 2.4, dimensionY + 3.2, -162),
-    new THREE.Vector3(dimensionX - 2.4, dimensionY - 3.2, 162),
-    new THREE.Vector3(dimensionX + 2.4, dimensionY + 3.2, 162),
+    new THREE.Vector3(dimensionX - 2.4, dimensionY - 3.2, SHIP.bowZ),
+    new THREE.Vector3(dimensionX + 2.4, dimensionY + 3.2, SHIP.bowZ),
+    new THREE.Vector3(dimensionX - 2.4, dimensionY - 3.2, SHIP.sternZ),
+    new THREE.Vector3(dimensionX + 2.4, dimensionY + 3.2, SHIP.sternZ),
   );
   dimensionGuide.add(
     new THREE.LineSegments(
@@ -349,16 +349,21 @@ function buildWorkbench() {
       new THREE.LineBasicMaterial({ color: 0x72bdd7, transparent: true, opacity: 0.36, depthWrite: false }),
     ),
   );
+  const beamZ = SHIP.sternZ + 24;
+  const beamHalf = DECK_BOUNDS.maxX + 3;
   const beamPoints = [
-    new THREE.Vector3(-38.4, dimensionY, 184),
-    new THREE.Vector3(38.4, dimensionY, 184),
-    new THREE.Vector3(-38.4, dimensionY - 2.5, 184),
-    new THREE.Vector3(-38.4, dimensionY + 2.5, 184),
-    new THREE.Vector3(38.4, dimensionY - 2.5, 184),
-    new THREE.Vector3(38.4, dimensionY + 2.5, 184),
+    new THREE.Vector3(-beamHalf, dimensionY, beamZ),
+    new THREE.Vector3(beamHalf, dimensionY, beamZ),
+    new THREE.Vector3(-beamHalf, dimensionY - 2.5, beamZ),
+    new THREE.Vector3(-beamHalf, dimensionY + 2.5, beamZ),
+    new THREE.Vector3(beamHalf, dimensionY - 2.5, beamZ),
+    new THREE.Vector3(beamHalf, dimensionY + 2.5, beamZ),
   ];
-  for (let x = -30; x <= 30; x += 10) {
-    beamPoints.push(new THREE.Vector3(x, dimensionY, 182.8), new THREE.Vector3(x, dimensionY, 185.2));
+  for (let x = -Math.floor(beamHalf / 10) * 10; x <= Math.floor(beamHalf / 10) * 10; x += 10) {
+    beamPoints.push(
+      new THREE.Vector3(x, dimensionY, beamZ - 1.2),
+      new THREE.Vector3(x, dimensionY, beamZ + 1.2),
+    );
   }
   dimensionGuide.add(
     new THREE.LineSegments(
@@ -373,7 +378,7 @@ function buildWorkbench() {
   sectionGuide.visible = false;
   sectionPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1.6);
 
-  const sectionPlaneGeometry = new THREE.PlaneGeometry(324, 92);
+  const sectionPlaneGeometry = new THREE.PlaneGeometry(SHIP.loa + 8, 96);
   sectionPlaneGeometry.rotateY(Math.PI / 2);
   const sectionFill = new THREE.Mesh(
     sectionPlaneGeometry,
@@ -385,15 +390,15 @@ function buildWorkbench() {
       depthWrite: false,
     }),
   );
-  sectionFill.position.set(1.6, 16, 0);
+  sectionFill.position.set(1.6, SHIP.keelY + 42, (SHIP.bowZ + SHIP.sternZ) / 2);
   sectionGuide.add(sectionFill);
 
   const sectionGridPoints = [];
-  for (let z = -160; z <= 160; z += 20) {
-    sectionGridPoints.push(new THREE.Vector3(1.62, -24, z), new THREE.Vector3(1.62, 52, z));
+  for (let z = Math.ceil(SHIP.bowZ / 20) * 20; z <= Math.floor(SHIP.sternZ / 20) * 20; z += 20) {
+    sectionGridPoints.push(new THREE.Vector3(1.62, SHIP.keelY - 8, z), new THREE.Vector3(1.62, SHIP.deckY + 34, z));
   }
-  for (let y = -20; y <= 50; y += 10) {
-    sectionGridPoints.push(new THREE.Vector3(1.62, y, -160), new THREE.Vector3(1.62, y, 160));
+  for (let y = Math.ceil((SHIP.keelY - 8) / 10) * 10; y <= SHIP.deckY + 34; y += 10) {
+    sectionGridPoints.push(new THREE.Vector3(1.62, y, SHIP.bowZ), new THREE.Vector3(1.62, y, SHIP.sternZ));
   }
   sectionGuide.add(
     new THREE.LineSegments(
@@ -402,10 +407,10 @@ function buildWorkbench() {
     ),
   );
   const sectionBorder = [
-    new THREE.Vector3(1.62, -24, -160),
-    new THREE.Vector3(1.62, -24, 160),
-    new THREE.Vector3(1.62, 52, 160),
-    new THREE.Vector3(1.62, 52, -160),
+    new THREE.Vector3(1.62, SHIP.keelY - 8, SHIP.bowZ),
+    new THREE.Vector3(1.62, SHIP.keelY - 8, SHIP.sternZ),
+    new THREE.Vector3(1.62, SHIP.deckY + 34, SHIP.sternZ),
+    new THREE.Vector3(1.62, SHIP.deckY + 34, SHIP.bowZ),
   ];
   sectionGuide.add(
     new THREE.LineLoop(
@@ -413,7 +418,7 @@ function buildWorkbench() {
       new THREE.LineBasicMaterial({ color: 0x6adcf5, transparent: true, opacity: 0.5, depthWrite: false }),
     ),
   );
-  sectionGuide.userData.labelAnchor = new THREE.Vector3(2.2, 56, 65);
+  sectionGuide.userData.labelAnchor = new THREE.Vector3(2.2, SHIP.deckY + 38, 70);
   scene.add(sectionGuide);
 }
 
@@ -473,10 +478,15 @@ function buildShipScene() {
   createSequences(api);
   setupMotionUI();
 
-  // 常驻动效：锅炉烟、艏波
+  // 常驻动效：锅炉烟、艏波（锚点取自舰岛与舰艏实际位置）
   const island = ship.handles.island;
-  effects?.funnelSmoke(new THREE.Vector3(31.4, (island?.funnelTop ?? 37.2) + 0.6, island?.funnelZ ?? -30.5));
-  effects?.bowSpray(new THREE.Vector3(0, 1.4, -148));
+  const funnelAnchor = new THREE.Vector3(
+    ISLAND.x + 0.4,
+    (island?.funnelTop ?? SHIP.deckY + 16.6) + 0.6,
+    island?.funnelZ ?? ISLAND.z + 14.5,
+  );
+  effects?.funnelSmoke(funnelAnchor);
+  effects?.bowSpray(new THREE.Vector3(0, 1.4, SHIP.bowZ + 16));
 
   window.__CV63 = { ship, scene, camera, controls, state, THREE, applyView, setExplode, setSection, animator, api };
   window.cv = {
@@ -541,8 +551,14 @@ function buildAnimatorApi() {
     stopFunnel: () => effects?.stopFunnel?.(),
     stopSpray: () => effects?.stopSpray?.(),
     startCruise: () => {
-      effects?.funnelSmoke(new THREE.Vector3(31.4, (handle.island?.funnelTop ?? 37.2) + 0.6, handle.island?.funnelZ ?? -30.5));
-      effects?.bowSpray(new THREE.Vector3(0, 1.4, -148));
+      effects?.funnelSmoke(
+        new THREE.Vector3(
+          ISLAND.x + 0.4,
+          (handle.island?.funnelTop ?? SHIP.deckY + 16.6) + 0.6,
+          handle.island?.funnelZ ?? ISLAND.z + 14.5,
+        ),
+      );
+      effects?.bowSpray(new THREE.Vector3(0, 1.4, SHIP.bowZ + 16));
     },
     stopCruise: () => {
       effects?.stopFunnel?.();
@@ -671,7 +687,7 @@ function addPartLabels() {
 }
 
 function addGuideLabels() {
-  const dimensionLabel = createGuideLabel("L.O.A. 323.8 M", "DIM-01 / OVERALL LENGTH");
+  const dimensionLabel = createGuideLabel(`L.O.A. ${SHIP.loa.toFixed(1)} M`, "DIM-01 / OVERALL LENGTH");
   dimensionLabel.position.copy(dimensionGuide.userData.labelAnchor);
   dimensionGuide.add(dimensionLabel);
   guideLabels.push({ object: dimensionLabel, type: "dimension", element: dimensionLabel.element });
@@ -850,8 +866,10 @@ function updateLabels() {
    ══════════════════════════════════════════════════════════════ */
 
 function shipPlanSVG() {
-  const px = (z) => 10 + ((z + 162) / 324) * 300; // bow → stern
-  const py = (x) => 46 + (x / 41) * 34; // port → starboard
+  const span = SHIP.sternZ - SHIP.bowZ;
+  const px = (z) => 10 + ((z - SHIP.bowZ) / span) * 300; // bow → stern
+  const xSpan = DECK_BOUNDS.maxX - DECK_BOUNDS.minX;
+  const py = (x) => 10 + ((x - DECK_BOUNDS.minX) / xSpan) * 76; // port(−) 在上，starboard(+) 在下
   const outline =
     DECK_OUTLINE.map(([x, z], index) => `${index === 0 ? "M" : "L"}${px(z).toFixed(1)} ${py(x).toFixed(1)}`).join(" ") +
     " Z";
@@ -914,8 +932,8 @@ function shipPlanSVG() {
       ${cats}
       ${elevators}
       ${islandRect}
-      <text x="${px(-148).toFixed(1)}" y="${(py(0) + 4).toFixed(1)}" fill="#dceaf0" fill-opacity=".45" font-size="12" font-family="monospace" text-anchor="middle">63</text>
-      <text x="160" y="92" fill="#6f8d9b" font-size="5.5" font-family="monospace" text-anchor="middle" letter-spacing="1.2">FLIGHT DECK / 9° SKEW · 4 ELEVATORS</text>
+      <text x="${px(SHIP.bowZ + 16).toFixed(1)}" y="${(py(0) + 4).toFixed(1)}" fill="#dceaf0" fill-opacity=".45" font-size="12" font-family="monospace" text-anchor="middle">63</text>
+      <text x="160" y="92" fill="#6f8d9b" font-size="5.5" font-family="monospace" text-anchor="middle" letter-spacing="1.2">FLIGHT DECK / ${SHIP.landingAngleDeg}° SKEW · 4 ELEVATORS</text>
     </svg>
     <span class="plan-label">PLAN / TOP VIEW</span>
   `;
@@ -1054,15 +1072,15 @@ function applyView(viewKey, options = {}) {
 function focusPart(id) {
   if (!id) return;
   const views = {
-    hull: { position: [365, 130, 220], target: [0, 8, 4] },
-    flightdeck: { position: [205, 128, 178], target: [-2, 26, 10] },
-    elevators: { position: [112, 52, 150], target: [33, 22, 108] },
-    island: { position: [126, 64, 32], target: [31, 34, -45] },
-    hangar: { position: [228, 92, 246], target: [0, 14, 44] },
+    hull: { position: [365, 130, 220], target: [0, 4, 4] },
+    flightdeck: { position: [205, 132, 178], target: [-2, SHIP.deckY + 4, 10] },
+    elevators: { position: [150, 62, 190], target: [ELEVATORS[2].x, SHIP.deckY - 2, ELEVATORS[2].z] },
+    island: { position: [126, 68, 92], target: [ISLAND.x, SHIP.deckY + 14, ISLAND.z] },
+    hangar: { position: [228, 92, 246], target: [0, 12, 44] },
     propulsion: { position: [196, 2, 272], target: [0, -16, 40] },
-    airwing: { position: [162, 104, 132], target: [0, 28, -40] },
-    weapons: { position: [180, 82, 232], target: [8, 26, 118] },
-    structure: { position: [218, 104, 204], target: [0, 12, 12] },
+    airwing: { position: [162, 108, 132], target: [0, SHIP.deckY + 6, -40] },
+    weapons: { position: [180, 82, 232], target: [ISLAND.x + 8, SHIP.deckY + 6, 132] },
+    structure: { position: [218, 104, 204], target: [0, 10, 12] },
   };
   const view = fitView(views[id] ?? views.hull);
   if (id === "hangar" || id === "structure") setSection(true, { silent: true });

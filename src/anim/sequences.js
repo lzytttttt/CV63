@@ -3,7 +3,7 @@
  * 所有序列通过 api 操作场景中的命名节点，不直接依赖 three.js 场景。
  */
 import * as THREE from "three";
-import { ANGLED_DECK, CATAPULTS, SHIP } from "../model/constants.js";
+import { ANGLED_DECK, CATAPULTS, ELEVATORS, SHIP } from "../model/constants.js";
 import { ease, window01 } from "./animator.js";
 
 const DECK_Y = SHIP.deckY;
@@ -188,7 +188,8 @@ export function createSequences(api) {
     duration: 12,
     setup: (seq) => {
       api.camera.setCinematic(true);
-      api.camera.flyTo([118, 52, 236], [0, 24, 138], 1.2);
+      const sternZ = ANGLED_DECK.centerStern[1];
+      api.camera.flyTo([118, 54, sternZ + 96], [0, SHIP.deckY + 4, sternZ], 1.2);
       const hero = api.airwing?.get("hero-approach")?.object;
       const { stern, dir, yaw } = landingFrame();
       seq.data.hero = hero;
@@ -242,9 +243,10 @@ export function createSequences(api) {
       if (t > 10.2) hero.visible = false;
 
       const zoom = window01(t, 0, 4, ease.out);
+      const sternZ = ANGLED_DECK.centerStern[1];
       api.camera.set(
-        [118 - zoom * 26, 52 - zoom * 6, 236 - zoom * 34],
-        [0, 24, 138 - zoom * 26],
+        [118 - zoom * 26, 54 - zoom * 6, sternZ + 96 - zoom * 34],
+        [0, SHIP.deckY + 4, sternZ - zoom * 26],
       );
       void dt;
       void progress;
@@ -263,13 +265,17 @@ export function createSequences(api) {
   });
 
   /* ═══════════════ 04 升降机转运 ═══════════════ */
+  const elevatorHero = ELEVATORS[2];
+  const elevatorCamPosition = [elevatorHero.x + 104, SHIP.deckY + 32, elevatorHero.z + 78];
+  const elevatorCamTarget = [elevatorHero.x, SHIP.deckY - 1, elevatorHero.z];
+
   animator.registerSequence("elevator", {
     label: "升降机转运",
     hint: "ELEV 3：舰载机随平台下沉至机库甲板并回升",
     duration: 10,
     setup: (seq) => {
       api.camera.setCinematic(true);
-      api.camera.flyTo([128, 52, 150], [33, 20, 111], 1.3);
+      api.camera.flyTo(elevatorCamPosition, elevatorCamTarget, 1.3);
       api.elevators?.setElevator("E3", 0, { immediate: true });
       seq.data.elevator = "E3";
     },
@@ -285,8 +291,8 @@ export function createSequences(api) {
       controller.setElevator(seq.data.elevator, value);
       const push = window01(t, 0, 2.2, ease.out);
       api.camera.set(
-        [128 - push * 14, 52 - push * 2, 150 - push * 12],
-        [33, 20 - value * 4, 111],
+        [elevatorCamPosition[0] - push * 14, elevatorCamPosition[1] - push * 2, elevatorCamPosition[2] - push * 12],
+        [elevatorCamTarget[0], elevatorCamTarget[1] - value * 4, elevatorCamTarget[2]],
       );
       void dt;
       void progress;

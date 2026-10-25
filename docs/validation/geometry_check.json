@@ -1,0 +1,1106 @@
+{
+  "generatedAt": "2026-10-25T12:03:02.599Z",
+  "tool": "tools/validate_geometry.mjs",
+  "status": "passed",
+  "source": {
+    "parameters": "docs/ref/kitty_hawk_cv63_v21_revised/cv63_parameters.json",
+    "modules": [
+      "src/model/params.js",
+      "src/model/constants.js"
+    ],
+    "hullRings": "hull.js（最小 DOM 垫片直载，权威值）"
+  },
+  "summary": {
+    "checks": 73,
+    "passed": 73,
+    "failed": 0,
+    "skipped": 4,
+    "warnings": 0,
+    "deckVertices": 35
+  },
+  "limits": {
+    "planLength": 0.05,
+    "maxSectionWidth": 0.05,
+    "landingAngleDeg": 0.02,
+    "stripWidth": 0.02,
+    "elevatorOverlapRatio": 0.005,
+    "elevatorFlushMin": -1,
+    "elevatorFlushMax": 1.5,
+    "airwingInset": 2,
+    "hullBeam": 0.02,
+    "hullKeel": 0.05,
+    "hullDeckTop": 0.001,
+    "stationHalfBeam": 0.01,
+    "junction": 0.000001
+  },
+  "hullSource": {
+    "live": true,
+    "values": "hull.js（最小 DOM 垫片直载，权威值）",
+    "reason": null,
+    "derivation": {
+      "compared": true,
+      "ringPointDelta": null,
+      "beamDelta": null,
+      "keelDelta": null,
+      "pointCount": "点数不一致：推导 40 vs hull.js 35"
+    }
+  },
+  "metrics": {
+    "deck": {
+      "area": 15822.55,
+      "basePlanArea": 17001.25,
+      "planLength": 323.8,
+      "bounds": {
+        "minX": -42.958,
+        "maxX": 35.646,
+        "minZ": -163.9365,
+        "maxZ": 159.8635
+      },
+      "deckXScale": 0.91399938,
+      "vertices": 35,
+      "selfIntersections": 0,
+      "duplicateVertices": 0,
+      "maxSectionWidth": 76.8,
+      "maxSectionWidthZ": -26.4742,
+      "maxSectionWidthBase": 84.0263,
+      "maxSectionHalfWidth": 38.4,
+      "maxAbsX": 42.958
+    },
+    "angledDeck": {
+      "angleDeg": 11.2,
+      "declaredAngleDeg": 11.2,
+      "stripWidth": 23,
+      "stripHalfWidth": 11.5,
+      "axisLength": 185.8034,
+      "centerStern": [
+        5.027,
+        137.4623
+      ],
+      "centerBow": [
+        -31.0624,
+        -44.8025
+      ],
+      "wires": [
+        {
+          "index": 1,
+          "fraction": 0.16,
+          "x": -0.7473,
+          "z": 108.2999,
+          "insideDeck": true
+        },
+        {
+          "index": 2,
+          "fraction": 0.21,
+          "x": -2.5518,
+          "z": 99.1867,
+          "insideDeck": true
+        },
+        {
+          "index": 3,
+          "fraction": 0.26,
+          "x": -4.3562,
+          "z": 90.0734,
+          "insideDeck": true
+        },
+        {
+          "index": 4,
+          "fraction": 0.31,
+          "x": -6.1607,
+          "z": 80.9602,
+          "insideDeck": true
+        }
+      ]
+    },
+    "elevators": [
+      {
+        "id": "E1",
+        "name": "Elevator_1_Stbd_Fwd",
+        "side": "stbd",
+        "centre": [
+          27.877,
+          -64.1491
+        ],
+        "width": 10.3282,
+        "length": 19.9575,
+        "inner": 22.7129,
+        "outer": 33.0411,
+        "deckEdgeAtCentreZ": 22.393,
+        "flushOffset": 0.3199,
+        "platformArea": 206.125,
+        "overlapArea": 0,
+        "overlapRatio": 0,
+        "rasterOverlapRatio": 0,
+        "triangulationComplete": true,
+        "notchZ": [
+          -74.1278,
+          -54.1703
+        ],
+        "platformZ": [
+          -74.1278,
+          -54.1703
+        ],
+        "rect": {
+          "minX": 22.7129,
+          "maxX": 33.0411,
+          "minZ": -74.1278,
+          "maxZ": -54.1703
+        }
+      },
+      {
+        "id": "E2",
+        "name": "Elevator_2_Stbd_Mid",
+        "side": "stbd",
+        "centre": [
+          29.3366,
+          -14.2553
+        ],
+        "width": 10.7852,
+        "length": 19.9575,
+        "inner": 23.944,
+        "outer": 34.7292,
+        "deckEdgeAtCentreZ": 23.764,
+        "flushOffset": 0.18,
+        "platformArea": 215.245,
+        "overlapArea": 0,
+        "overlapRatio": 0,
+        "rasterOverlapRatio": 0,
+        "triangulationComplete": true,
+        "notchZ": [
+          -24.2341,
+          -4.2766
+        ],
+        "platformZ": [
+          -24.2341,
+          -4.2766
+        ],
+        "rect": {
+          "minX": 23.944,
+          "maxX": 34.7292,
+          "minZ": -24.2341,
+          "maxZ": -4.2766
+        }
+      },
+      {
+        "id": "E3",
+        "name": "Elevator_3_Stbd_Aft",
+        "side": "stbd",
+        "centre": [
+          26.7774,
+          72.295
+        ],
+        "width": 9.3228,
+        "length": 19.9575,
+        "inner": 22.116,
+        "outer": 31.4388,
+        "deckEdgeAtCentreZ": 21.936,
+        "flushOffset": 0.18,
+        "platformArea": 186.06,
+        "overlapArea": 0,
+        "overlapRatio": 0,
+        "rasterOverlapRatio": 0,
+        "triangulationComplete": true,
+        "notchZ": [
+          62.3162,
+          82.2737
+        ],
+        "platformZ": [
+          62.3162,
+          82.2737
+        ],
+        "rect": {
+          "minX": 22.116,
+          "maxX": 31.4388,
+          "minZ": 62.3162,
+          "maxZ": 82.2737
+        }
+      },
+      {
+        "id": "E4",
+        "name": "Elevator_4_Port_Aft",
+        "side": "port",
+        "centre": [
+          -18.28,
+          104.8786
+        ],
+        "width": 8.683,
+        "length": 19.9575,
+        "inner": -13.9385,
+        "outer": -22.6215,
+        "deckEdgeAtCentreZ": -13.71,
+        "flushOffset": -0.2285,
+        "platformArea": 173.291,
+        "overlapArea": 0,
+        "overlapRatio": 0,
+        "rasterOverlapRatio": 0,
+        "triangulationComplete": true,
+        "notchZ": [
+          94.8999,
+          114.8574
+        ],
+        "platformZ": [
+          94.8999,
+          114.8574
+        ],
+        "rect": {
+          "minX": -22.6215,
+          "maxX": -13.9385,
+          "minZ": 94.8999,
+          "maxZ": 114.8574
+        }
+      }
+    ],
+    "catapults": [
+      {
+        "id": "cat1",
+        "label": "CAT 1",
+        "start": [
+          5.484,
+          -69.2403
+        ],
+        "end": [
+          5.027,
+          -159.8635
+        ],
+        "mid": [
+          5.2555,
+          -114.5519
+        ],
+        "length": 90.624,
+        "angleDeg": 0.289,
+        "inside": {
+          "start": true,
+          "mid": true,
+          "end": true
+        },
+        "minEdgeDistance": 3.455
+      },
+      {
+        "id": "cat2",
+        "label": "CAT 2",
+        "start": [
+          -6.855,
+          -69.2403
+        ],
+        "end": [
+          -5.027,
+          -159.8635
+        ],
+        "mid": [
+          -5.941,
+          -114.5519
+        ],
+        "length": 90.642,
+        "angleDeg": 1.156,
+        "inside": {
+          "start": true,
+          "mid": true,
+          "end": true
+        },
+        "minEdgeDistance": 3.399
+      },
+      {
+        "id": "cat3",
+        "label": "CAT 3",
+        "start": [
+          -17.366,
+          35.6384
+        ],
+        "end": [
+          -30.162,
+          -45.8208
+        ],
+        "mid": [
+          -23.764,
+          -5.0912
+        ],
+        "length": 82.458,
+        "angleDeg": 8.927,
+        "inside": {
+          "start": true,
+          "mid": true,
+          "end": true
+        },
+        "minEdgeDistance": 4.104
+      },
+      {
+        "id": "cat4",
+        "label": "CAT 4",
+        "start": [
+          -26.506,
+          40.7296
+        ],
+        "end": [
+          -39.759,
+          -40.7296
+        ],
+        "mid": [
+          -33.1325,
+          0
+        ],
+        "length": 82.53,
+        "angleDeg": 9.241,
+        "inside": {
+          "start": true,
+          "mid": true,
+          "end": true
+        },
+        "minEdgeDistance": 3.102
+      }
+    ],
+    "airwing": {
+      "count": 11,
+      "exempt": [
+        "hornet-4",
+        "hornet-5"
+      ],
+      "spots": [
+        {
+          "id": "hawkeye-1",
+          "type": "e2c",
+          "x": -6,
+          "z": -136,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 6.525,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "prowler-1",
+          "type": "ea6b",
+          "x": 14,
+          "z": -104,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 5.623,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "hornet-1",
+          "type": "fa18",
+          "x": 5.484,
+          "z": -69.2403,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 16.909,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "hornet-2",
+          "type": "fa18",
+          "x": -6.855,
+          "z": -69.2403,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 13.064,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "tomcat-1",
+          "type": "f14",
+          "x": 26.5,
+          "z": -40,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 6.482,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "tomcat-2",
+          "type": "f14",
+          "x": 26,
+          "z": -30,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 4.307,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "hornet-3",
+          "type": "fa18",
+          "x": -22.5,
+          "z": 54,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 6.03,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "tomcat-3",
+          "type": "f14",
+          "x": -7,
+          "z": 128,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 12.061,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "seaking-1",
+          "type": "sh3",
+          "x": 8,
+          "z": 136,
+          "elevator": null,
+          "insideDeck": true,
+          "boundaryDistance": 12.903,
+          "insetOk": true,
+          "onOwnPlatform": null
+        },
+        {
+          "id": "hornet-4",
+          "type": "fa18",
+          "x": 26.7774,
+          "z": 72.295,
+          "elevator": "E3",
+          "insideDeck": false,
+          "boundaryDistance": 4.841,
+          "insetOk": null,
+          "onOwnPlatform": true
+        },
+        {
+          "id": "hornet-5",
+          "type": "fa18",
+          "x": -18.28,
+          "z": 104.8786,
+          "elevator": "E4",
+          "insideDeck": false,
+          "boundaryDistance": 4.57,
+          "insetOk": null,
+          "onOwnPlatform": true
+        }
+      ]
+    },
+    "hull": {
+      "stationCount": 12,
+      "stationsIncreasing": true,
+      "maxHalfBeam": 19.75,
+      "minHalfBeam": 0.4,
+      "beam": 39.5,
+      "lengthScale": 1.01823899,
+      "zRange": [
+        -163.9365,
+        159.8635
+      ],
+      "profileSampleCount": 37,
+      "profilePointCount": 38,
+      "liveRingPointCount": 35,
+      "profileMaxAbsFrac": 1.00074017,
+      "profileMinYRef": -10.84911173,
+      "sampledMaxHalfBeam": 19.75,
+      "sampledMaxHalfBeamZ": -41.9365,
+      "rings": [
+        {
+          "z": -150,
+          "pointCount": 35,
+          "halfBeam": 6.0643,
+          "maxAbsX": 6.0643,
+          "beamDelta": 0,
+          "keelY": -5.9642,
+          "lowestY": -5.9642,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": -100,
+          "pointCount": 35,
+          "halfBeam": 17.4074,
+          "maxAbsX": 17.4074,
+          "beamDelta": 0,
+          "keelY": -10.3131,
+          "lowestY": -10.3131,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": -50,
+          "pointCount": 35,
+          "halfBeam": 19.6317,
+          "maxAbsX": 19.6317,
+          "beamDelta": 0,
+          "keelY": -10.9,
+          "lowestY": -10.9,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": 0,
+          "pointCount": 35,
+          "halfBeam": 19.75,
+          "maxAbsX": 19.75,
+          "beamDelta": 0,
+          "keelY": -10.9,
+          "lowestY": -10.9,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": 50,
+          "pointCount": 35,
+          "halfBeam": 19.75,
+          "maxAbsX": 19.75,
+          "beamDelta": 0,
+          "keelY": -10.9,
+          "lowestY": -10.9,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": 100,
+          "pointCount": 35,
+          "halfBeam": 19.1976,
+          "maxAbsX": 19.1976,
+          "beamDelta": 0,
+          "keelY": -10.7175,
+          "lowestY": -10.7175,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        },
+        {
+          "z": 150,
+          "pointCount": 35,
+          "halfBeam": 14.1826,
+          "maxAbsX": 14.1826,
+          "beamDelta": 0,
+          "keelY": -5.8647,
+          "lowestY": -5.8647,
+          "keelDelta": 0,
+          "highestY": 19.4,
+          "deckUndersideY": 19.4,
+          "pointsAboveDeck": 0
+        }
+      ],
+      "junction": {
+        "samples": 691,
+        "degenerate": 0,
+        "worst": {
+          "z": -129.3865,
+          "hullHalfBeam": 12.4307,
+          "hullWidth": 9.9445,
+          "deckHalfWidth": 14.3679,
+          "clearance": 4.4234
+        },
+        "queryMismatch": 0
+      }
+    },
+    "helpers": {
+      "squareArea": 4,
+      "overlapArea": 2,
+      "overlapComplete": true,
+      "concaveArea": 14,
+      "triArea": 14,
+      "triComplete": true,
+      "concaveOverlapArea": 1.0000000000000009,
+      "insidePoint": true,
+      "notchPoint": false
+    }
+  },
+  "checks": [
+    {
+      "id": "deck.simple",
+      "ok": true,
+      "detail": "甲板轮廓是简单多边形（35 个顶点，无自交、无重合顶点）",
+      "value": 0
+    },
+    {
+      "id": "deck.area",
+      "ok": true,
+      "detail": "甲板轮廓面积 15822.55 m²（未缩放的参数轮廓 17001.25 m²）",
+      "value": 15822.5501,
+      "limit": 1000
+    },
+    {
+      "id": "deck.planLength",
+      "ok": true,
+      "detail": "甲板平面长度 323.800 m（目标 323.8 ± 0.05）",
+      "value": 323.8,
+      "limit": 323.8
+    },
+    {
+      "id": "deck.maxSectionWidth",
+      "ok": true,
+      "detail": "最大横截面宽 76.8000 m @ z=-26.47（参数轮廓 84.0263 m × DECK_X_SCALE 0.913999；目标 76.8 ± 0.05）",
+      "value": 76.8,
+      "limit": 76.8
+    },
+    {
+      "id": "angled.angle",
+      "ok": true,
+      "detail": "着舰中轴线夹角 11.200000°（目标 11.2 ± 0.02；尾端 [5.03, 137.46] → 前端 [-31.06, -44.80]，轴长 185.80 m）",
+      "value": 11.2,
+      "limit": 11.2
+    },
+    {
+      "id": "angled.stripWidth",
+      "ok": true,
+      "detail": "着舰带宽 23.0000 m（半宽 11.500 m，目标 23 ± 0.02）",
+      "value": 23,
+      "limit": 23
+    },
+    {
+      "id": "angled.wiresMonotonic",
+      "ok": true,
+      "detail": "四道拦阻索 z 严格递减：108.30 > 99.19 > 90.07 > 80.96"
+    },
+    {
+      "id": "angled.wiresInsideDeck",
+      "ok": true,
+      "detail": "四道拦阻索全部落在甲板轮廓内：[-0.75, 108.30] [-2.55, 99.19] [-4.36, 90.07] [-6.16, 80.96]"
+    },
+    {
+      "id": "elevator.E1.outsideDeck",
+      "ok": true,
+      "detail": "ELEV 1（Elevator_1_Stbd_Fwd）平台完全位于甲板轮廓之外：重叠 0.000 m² / 0.000 %（栅格复核 0.000 %）",
+      "value": 0,
+      "limit": 0.005
+    },
+    {
+      "id": "elevator.E1.flush",
+      "ok": true,
+      "detail": "平台内缘相对 z=-64.15 处甲板边缘偏移 0.320 m（允许 [-1, 1.5]；平台内缘 22.713 m，甲板边缘 22.393 m）",
+      "value": 0.3199,
+      "limit": 1.5
+    },
+    {
+      "id": "elevator.E1.outerBound",
+      "ok": true,
+      "detail": "平台外缘 |x| = 33.041 m ≤ 甲板最大半宽 38.400 m（余量 5.359 m；轮廓最外点 |x| = 42.958 m）",
+      "value": 33.0411,
+      "limit": 38.40000000637281
+    },
+    {
+      "id": "elevator.E2.outsideDeck",
+      "ok": true,
+      "detail": "ELEV 2（Elevator_2_Stbd_Mid）平台完全位于甲板轮廓之外：重叠 0.000 m² / 0.000 %（栅格复核 0.000 %）",
+      "value": 0,
+      "limit": 0.005
+    },
+    {
+      "id": "elevator.E2.flush",
+      "ok": true,
+      "detail": "平台内缘相对 z=-14.26 处甲板边缘偏移 0.180 m（允许 [-1, 1.5]；平台内缘 23.944 m，甲板边缘 23.764 m）",
+      "value": 0.18,
+      "limit": 1.5
+    },
+    {
+      "id": "elevator.E2.outerBound",
+      "ok": true,
+      "detail": "平台外缘 |x| = 34.729 m ≤ 甲板最大半宽 38.400 m（余量 3.671 m；轮廓最外点 |x| = 42.958 m）",
+      "value": 34.7292,
+      "limit": 38.40000000637281
+    },
+    {
+      "id": "elevator.E3.outsideDeck",
+      "ok": true,
+      "detail": "ELEV 3（Elevator_3_Stbd_Aft）平台完全位于甲板轮廓之外：重叠 0.000 m² / 0.000 %（栅格复核 0.000 %）",
+      "value": 0,
+      "limit": 0.005
+    },
+    {
+      "id": "elevator.E3.flush",
+      "ok": true,
+      "detail": "平台内缘相对 z=72.29 处甲板边缘偏移 0.180 m（允许 [-1, 1.5]；平台内缘 22.116 m，甲板边缘 21.936 m）",
+      "value": 0.18,
+      "limit": 1.5
+    },
+    {
+      "id": "elevator.E3.outerBound",
+      "ok": true,
+      "detail": "平台外缘 |x| = 31.439 m ≤ 甲板最大半宽 38.400 m（余量 6.961 m；轮廓最外点 |x| = 42.958 m）",
+      "value": 31.4388,
+      "limit": 38.40000000637281
+    },
+    {
+      "id": "elevator.E4.outsideDeck",
+      "ok": true,
+      "detail": "ELEV 4（Elevator_4_Port_Aft）平台完全位于甲板轮廓之外：重叠 0.000 m² / 0.000 %（栅格复核 0.000 %）",
+      "value": 0,
+      "limit": 0.005
+    },
+    {
+      "id": "elevator.E4.flush",
+      "ok": true,
+      "detail": "平台内缘相对 z=104.88 处甲板边缘偏移 -0.228 m（允许 [-1, 1.5]；平台内缘 -13.938 m，甲板边缘 -13.710 m）",
+      "value": -0.2285,
+      "limit": 1.5
+    },
+    {
+      "id": "elevator.E4.outerBound",
+      "ok": true,
+      "detail": "平台外缘 |x| = 22.621 m ≤ 甲板最大半宽 38.400 m（余量 15.779 m；轮廓最外点 |x| = 42.958 m）",
+      "value": 22.6215,
+      "limit": 38.40000000637281
+    },
+    {
+      "id": "catapult.cat1.onDeck",
+      "ok": true,
+      "detail": "CAT 1 两端点均在甲板轮廓内，轨道长 90.62 m；端点距边缘最小 3.46 m"
+    },
+    {
+      "id": "catapult.cat1.midpoint",
+      "ok": true,
+      "detail": "CAT 1 中点 [5.26, -114.55] 在甲板轮廓内"
+    },
+    {
+      "id": "catapult.cat2.onDeck",
+      "ok": true,
+      "detail": "CAT 2 两端点均在甲板轮廓内，轨道长 90.64 m；端点距边缘最小 3.40 m"
+    },
+    {
+      "id": "catapult.cat2.midpoint",
+      "ok": true,
+      "detail": "CAT 2 中点 [-5.94, -114.55] 在甲板轮廓内"
+    },
+    {
+      "id": "catapult.cat3.onDeck",
+      "ok": true,
+      "detail": "CAT 3 两端点均在甲板轮廓内，轨道长 82.46 m；端点距边缘最小 4.10 m"
+    },
+    {
+      "id": "catapult.cat3.midpoint",
+      "ok": true,
+      "detail": "CAT 3 中点 [-23.76, -5.09] 在甲板轮廓内"
+    },
+    {
+      "id": "catapult.cat4.onDeck",
+      "ok": true,
+      "detail": "CAT 4 两端点均在甲板轮廓内，轨道长 82.53 m；端点距边缘最小 3.10 m"
+    },
+    {
+      "id": "catapult.cat4.midpoint",
+      "ok": true,
+      "detail": "CAT 4 中点 [-33.13, 0.00] 在甲板轮廓内"
+    },
+    {
+      "id": "airwing.hawkeye-1.inset",
+      "ok": true,
+      "detail": "hawkeye-1（e2c）[-6.00, -136.00] 在甲板内，距边缘 6.52 m（需 ≥ 2 m）",
+      "value": 6.5248,
+      "limit": 2
+    },
+    {
+      "id": "airwing.hawkeye-1.clearOfElevators",
+      "ok": true,
+      "detail": "hawkeye-1 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.prowler-1.inset",
+      "ok": true,
+      "detail": "prowler-1（ea6b）[14.00, -104.00] 在甲板内，距边缘 5.62 m（需 ≥ 2 m）",
+      "value": 5.6234,
+      "limit": 2
+    },
+    {
+      "id": "airwing.prowler-1.clearOfElevators",
+      "ok": true,
+      "detail": "prowler-1 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.hornet-1.inset",
+      "ok": true,
+      "detail": "hornet-1（fa18）[5.48, -69.24] 在甲板内，距边缘 16.91 m（需 ≥ 2 m）",
+      "value": 16.909,
+      "limit": 2
+    },
+    {
+      "id": "airwing.hornet-1.clearOfElevators",
+      "ok": true,
+      "detail": "hornet-1 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.hornet-2.inset",
+      "ok": true,
+      "detail": "hornet-2（fa18）[-6.85, -69.24] 在甲板内，距边缘 13.06 m（需 ≥ 2 m）",
+      "value": 13.0642,
+      "limit": 2
+    },
+    {
+      "id": "airwing.hornet-2.clearOfElevators",
+      "ok": true,
+      "detail": "hornet-2 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.tomcat-1.inset",
+      "ok": true,
+      "detail": "tomcat-1（f14）[26.50, -40.00] 在甲板内，距边缘 6.48 m（需 ≥ 2 m）",
+      "value": 6.482,
+      "limit": 2
+    },
+    {
+      "id": "airwing.tomcat-1.clearOfElevators",
+      "ok": true,
+      "detail": "tomcat-1 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.tomcat-2.inset",
+      "ok": true,
+      "detail": "tomcat-2（f14）[26.00, -30.00] 在甲板内，距边缘 4.31 m（需 ≥ 2 m）",
+      "value": 4.3073,
+      "limit": 2
+    },
+    {
+      "id": "airwing.tomcat-2.clearOfElevators",
+      "ok": true,
+      "detail": "tomcat-2 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.hornet-3.inset",
+      "ok": true,
+      "detail": "hornet-3（fa18）[-22.50, 54.00] 在甲板内，距边缘 6.03 m（需 ≥ 2 m）",
+      "value": 6.0302,
+      "limit": 2
+    },
+    {
+      "id": "airwing.hornet-3.clearOfElevators",
+      "ok": true,
+      "detail": "hornet-3 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.tomcat-3.inset",
+      "ok": true,
+      "detail": "tomcat-3（f14）[-7.00, 128.00] 在甲板内，距边缘 12.06 m（需 ≥ 2 m）",
+      "value": 12.0606,
+      "limit": 2
+    },
+    {
+      "id": "airwing.tomcat-3.clearOfElevators",
+      "ok": true,
+      "detail": "tomcat-3 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.seaking-1.inset",
+      "ok": true,
+      "detail": "seaking-1（sh3）[8.00, 136.00] 在甲板内，距边缘 12.90 m（需 ≥ 2 m）",
+      "value": 12.903,
+      "limit": 2
+    },
+    {
+      "id": "airwing.seaking-1.clearOfElevators",
+      "ok": true,
+      "detail": "seaking-1 中心不落在任何升降机平台矩形内"
+    },
+    {
+      "id": "airwing.hornet-4.onElevatorPlatform",
+      "ok": true,
+      "detail": "hornet-4 停放于升降机 E3 平台内（平台 x 22.12…31.44 / z 62.32…82.27）"
+    },
+    {
+      "id": "airwing.hornet-5.onElevatorPlatform",
+      "ok": true,
+      "detail": "hornet-5 停放于升降机 E4 平台内（平台 x -22.62…-13.94 / z 94.90…114.86）"
+    },
+    {
+      "id": "hull.stationsIncreasing",
+      "ok": true,
+      "detail": "站位表 12 个控制站位，平面位置严格递增（-157 → 161）"
+    },
+    {
+      "id": "hull.maxHalfBeam",
+      "ok": true,
+      "detail": "站位表最大半宽 19.750 m → 型宽 39.500 m（目标 39.5 ± 0.02；最小半宽 0.400 m）",
+      "value": 39.5,
+      "limit": 39.5
+    },
+    {
+      "id": "hull.ring.-150.beam",
+      "ok": true,
+      "detail": "z=-150：横剖线 max|x| = 6.0643 m，hullHalfBeamAt = 6.0643 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.-150.keel",
+      "ok": true,
+      "detail": "z=-150：横剖线最低 y = -5.9642 m，hullKeelYAt = -5.9642 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.-150.belowDeck",
+      "ok": true,
+      "detail": "z=-150：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.-100.beam",
+      "ok": true,
+      "detail": "z=-100：横剖线 max|x| = 17.4074 m，hullHalfBeamAt = 17.4074 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.-100.keel",
+      "ok": true,
+      "detail": "z=-100：横剖线最低 y = -10.3131 m，hullKeelYAt = -10.3131 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.-100.belowDeck",
+      "ok": true,
+      "detail": "z=-100：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.-50.beam",
+      "ok": true,
+      "detail": "z=-50：横剖线 max|x| = 19.6317 m，hullHalfBeamAt = 19.6317 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.-50.keel",
+      "ok": true,
+      "detail": "z=-50：横剖线最低 y = -10.9000 m，hullKeelYAt = -10.9000 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.-50.belowDeck",
+      "ok": true,
+      "detail": "z=-50：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.0.beam",
+      "ok": true,
+      "detail": "z=0：横剖线 max|x| = 19.7500 m，hullHalfBeamAt = 19.7500 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.0.keel",
+      "ok": true,
+      "detail": "z=0：横剖线最低 y = -10.9000 m，hullKeelYAt = -10.9000 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.0.belowDeck",
+      "ok": true,
+      "detail": "z=0：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.50.beam",
+      "ok": true,
+      "detail": "z=50：横剖线 max|x| = 19.7500 m，hullHalfBeamAt = 19.7500 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.50.keel",
+      "ok": true,
+      "detail": "z=50：横剖线最低 y = -10.9000 m，hullKeelYAt = -10.9000 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.50.belowDeck",
+      "ok": true,
+      "detail": "z=50：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.100.beam",
+      "ok": true,
+      "detail": "z=100：横剖线 max|x| = 19.1976 m，hullHalfBeamAt = 19.1976 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.100.keel",
+      "ok": true,
+      "detail": "z=100：横剖线最低 y = -10.7175 m，hullKeelYAt = -10.7175 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.100.belowDeck",
+      "ok": true,
+      "detail": "z=100：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "hull.ring.150.beam",
+      "ok": true,
+      "detail": "z=150：横剖线 max|x| = 14.1826 m，hullHalfBeamAt = 14.1826 m，偏差 0.0000 m（容差 ±0.02）",
+      "value": 0,
+      "limit": 0.02
+    },
+    {
+      "id": "hull.ring.150.keel",
+      "ok": true,
+      "detail": "z=150：横剖线最低 y = -5.8647 m，hullKeelYAt = -5.8647 m，偏差 0.00000 m（容差 ±0.05）",
+      "value": 0,
+      "limit": 0.05
+    },
+    {
+      "id": "hull.ring.150.belowDeck",
+      "ok": true,
+      "detail": "z=150：横剖线最高 y = 19.4000 m，甲板下缘 19.4000 m，未穿出甲板",
+      "value": 19.4,
+      "limit": 19.400000000000002
+    },
+    {
+      "id": "junction.deckCoversHull",
+      "ok": true,
+      "detail": "甲板与舷侧结合部最小覆盖余量 4.423 m @ z=-129.39（舷侧半宽 9.945 m ≤ 甲板半宽 14.368 m；样本 691 个，退化端点 0 个）",
+      "value": 4.4234,
+      "limit": 0
+    },
+    {
+      "id": "tools.helpers",
+      "ok": true,
+      "detail": "几何助手自检通过（正方形面积 4、半矩形重叠 2、U 形三角化 14.000000 / 面积 14、跨凹口重叠 1.000000）"
+    }
+  ],
+  "issues": [],
+  "warnings": [],
+  "diagnosis": [
+    "横剖线宽度：剖面最大 |frac| = 1.000740，Catmull-Rom 的过冲使横剖线 max|x| 比 hullHalfBeamAt 宽出最多 0.0000 m，仍在 ±0.02 容差内。",
+    "升降机上的停机点 hornet-4（E3） / hornet-5（E4） 在甲板轮廓之外（平台本身位于凹口外侧），免除“甲板内缩 2 m”判定，改为校验其落在自己的平台矩形内。"
+  ],
+  "skipped": [
+    {
+      "id": "airwing.hornet-4.inset",
+      "reason": "停放于升降机 E3 平台上，甲板内缩判定不适用"
+    },
+    {
+      "id": "airwing.hornet-4.clearOfElevators",
+      "reason": "本身即升降机 E3 上的停机点"
+    },
+    {
+      "id": "airwing.hornet-5.inset",
+      "reason": "停放于升降机 E4 平台上，甲板内缩判定不适用"
+    },
+    {
+      "id": "airwing.hornet-5.clearOfElevators",
+      "reason": "本身即升降机 E4 上的停机点"
+    }
+  ]
+}

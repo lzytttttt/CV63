@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { AIRWING_SPOTS, HANGAR_AIRCRAFT, SHIP } from "./constants.js";
+import { AIRWING_SPOTS, HANGAR_AIRCRAFT, SHIP, deckEdgeAt } from "./constants.js";
 import { createAircraft } from "./aircraft.js";
 import { addBox, addCylinder, addLineSegments } from "./geometry.js";
 
@@ -112,10 +112,16 @@ export function buildAirwing(parent, ctx) {
     tractors.push(tractor);
   });
 
-  // 甲板边缘作业灯 / 系留点
+  // 甲板边缘系留点：贴着真实甲板外缘内缩 0.9 … 2.5 m
   const tiePoints = [];
-  for (let z = -140; z <= 150; z += 4) {
-    tiePoints.push(new THREE.Vector3(33.5, DECK_Y + 0.05, z), new THREE.Vector3(31.5, DECK_Y + 0.05, z));
+  for (let z = SHIP.bowZ + 6; z <= SHIP.sternZ - 6; z += 4) {
+    for (const side of [-1, 1]) {
+      const x = deckEdgeAt(z, side) - side * 0.9;
+      tiePoints.push(
+        new THREE.Vector3(x, DECK_Y + 0.05, z),
+        new THREE.Vector3(x - side * 1.6, DECK_Y + 0.05, z),
+      );
+    }
   }
   addLineSegments(group, tiePoints, M.lineSoft);
 

@@ -1,5 +1,15 @@
 import * as THREE from "three";
-import { CATAPULTS, COLORS, DECK_BOUNDS, DECK_OUTLINE, ANGLED_DECK, ELEVATOR_NOTCHES } from "./constants.js";
+import {
+  ANGLED_DECK,
+  CATAPULTS,
+  COLORS,
+  DECK_BOUNDS,
+  DECK_OUTLINE,
+  ELEVATOR_NOTCHES,
+  SHIP,
+  deckEdgeAt,
+} from "./constants.js";
+import { CV63_PARAMS, seededRandom } from "./params.js";
 
 /* ── 画布贴图工具 ─────────────────────────────────────────── */
 
@@ -48,6 +58,8 @@ function pathOutline(ctx) {
 }
 
 function makeDeckTexture() {
+  // 固定种子：每次生成的甲板噪点/板缝一致，便于逐版本比对
+  const rnd = seededRandom(CV63_PARAMS.deck.textureSeed);
   return canvasTexture(DECK_TEX_W, DECK_TEX_H, (ctx, W, H) => {
     const { minX, maxX, minZ, maxZ } = DECK_BOUNDS;
     const toPx = deckPixel;
@@ -62,7 +74,7 @@ function makeDeckTexture() {
     ctx.clip();
     for (let z = minZ; z < maxZ; z += 6) {
       const [, py] = toPx(0, z);
-      ctx.strokeStyle = `rgba(18,22,25,${0.28 + Math.random() * 0.2})`;
+      ctx.strokeStyle = `rgba(18,22,25,${0.28 + rnd() * 0.2})`;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(0, py);
@@ -80,10 +92,10 @@ function makeDeckTexture() {
     }
     // 大面积色斑，避免纯色感
     for (let i = 0; i < 260; i++) {
-      const [px] = toPx(minX + Math.random() * (maxX - minX), 0);
-      const [, py] = toPx(0, minZ + Math.random() * (maxZ - minZ));
-      const r = 12 + Math.random() * 60;
-      const shade = Math.random() > 0.5 ? "60,68,74" : "46,52,57";
+      const [px] = toPx(minX + rnd() * (maxX - minX), 0);
+      const [, py] = toPx(0, minZ + rnd() * (maxZ - minZ));
+      const r = 12 + rnd() * 60;
+      const shade = rnd() > 0.5 ? "60,68,74" : "46,52,57";
       const grad = ctx.createRadialGradient(px, py, 0, px, py, r);
       grad.addColorStop(0, `rgba(${shade},0.34)`);
       grad.addColorStop(1, `rgba(${shade},0)`);
@@ -92,10 +104,10 @@ function makeDeckTexture() {
       ctx.arc(px, py, r, 0, Math.PI * 2);
       ctx.fill();
     }
-    // 系留孔网格
+    // 系留孔网格（按甲板实际包围盒铺满）
     ctx.fillStyle = "rgba(24,28,31,0.5)";
-    for (let x = -38; x <= 38; x += 3.4) {
-      for (let z = -158; z <= 160; z += 3.4) {
+    for (let x = minX + 1; x <= maxX - 1; x += 3.4) {
+      for (let z = minZ + 1; z <= maxZ - 1; z += 3.4) {
         const [px, py] = toPx(x, z);
         ctx.fillRect(px - 0.8, py - 0.8, 1.6, 1.6);
       }
@@ -296,39 +308,40 @@ function makeDeckTexture() {
     ctx.save();
     pathOutline(ctx);
     ctx.clip();
-    const [exPx, eyPx] = toPx(0, 0);
-    // 舷侧安全通道
+    // 舷侧安全通道：跟着真实甲板外缘内缩 1.6 m
     ctx.strokeStyle = "rgba(184,72,60,0.55)";
     ctx.lineWidth = deckScaleX(0.45);
     for (const side of [-1, 1]) {
       ctx.beginPath();
-      for (let z = -150; z <= 155; z += 4) {
-        const x = side * 35.6;
+      let started = false;
+      for (let z = SHIP.bowZ + 4; z <= SHIP.sternZ - 4; z += 3) {
+        const x = deckEdgeAt(z, side) - side * 1.6;
         const [px, py] = toPx(x, z);
-        if (z === -150) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
+        if (!started) {
+          ctx.moveTo(px, py);
+          started = true;
+        } else ctx.lineTo(px, py);
       }
       ctx.stroke();
     }
 
-    // 升降机凹口描边
+    // 升降机井口标记（贴图只画井口内缘，井体几何由 elevators.js 提供）
     ELEVATOR_NOTCHES.forEach((notch) => {
-      const x0 = Math.min(notch.inner, notch.outer);
-      const x1 = Math.max(notch.inner, notch.outer);
-      const [ax, ay] = toPx(x0, notch.z0);
-      const [bx, by] = toPx(x1, notch.z1);
+      const [ax, ay] = toPx(notch.inner, notch.z0);
+      const [bx, by] = toPx(notch.inner, notch.z1);
       ctx.strokeStyle = "rgba(224,178,102,0.85)";
       ctx.lineWidth = deckScaleX(0.55);
       ctx.setLineDash([deckScaleZ(2.4), deckScaleZ(1.6)]);
-      ctx.strokeRect(ax, ay, bx - ax, by - ay);
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "rgba(20,24,26,0.3)";
-      ctx.fillRect(ax, ay, bx - ax, by - ay);
     });
 
     // 舰艏舷号 63（沿甲板纵向排布，顶部朝舰艏）
     {
-      const [px, py] = toPx(-2, -147);
+      const [px, py] = toPx(0, SHIP.bowZ + 15);
       ctx.save();
       ctx.translate(px, py);
       ctx.rotate(Math.PI / 2);
@@ -341,7 +354,7 @@ function makeDeckTexture() {
     }
     // 弹射器编号
     CATAPULTS.forEach((cat) => {
-      const [px, py] = toPx(cat.start[0] + 1.2, cat.start[1] + 5);
+      const [px, py] = toPx(cat.start[0] + 1.6, cat.start[1] + 5);
       ctx.fillStyle = "rgba(230,238,241,0.72)";
       ctx.font = `bold ${deckScaleX(2.4)}px Arial`;
       ctx.textAlign = "center";

@@ -63,11 +63,15 @@ export function makePlanarPolygon(points, y, { uv = deckUV, uvScale = null } = {
   return geometry;
 }
 
-/** 甲板类厚板：顶面 + 底面 + 外壁，顶面使用甲板贴图 UV */
+/**
+ * 甲板类厚板：顶面 + 底面 + 外壁，顶面使用甲板贴图 UV。
+ * 外壁的绕向按轮廓的有向面积校正，保证凹形轮廓（升降机井）的法线也朝外。
+ */
 export function makeSlabGeometry(points, topY, thickness, { uv = deckUV } = {}) {
   const top = makePlanarPolygon(points, topY, { uv });
   const bottom = makePlanarPolygon(points, topY - thickness, { uv });
 
+  const flipWalls = polygonArea(points) < 0;
   const wallPositions = [];
   const wallUvs = [];
   const wallIndices = [];
@@ -80,7 +84,8 @@ export function makeSlabGeometry(points, topY, thickness, { uv = deckUV } = {}) 
     const base = wallPositions.length / 3;
     wallPositions.push(x1, topY, z1, x2, topY, z2, x2, topY - thickness, z2, x1, topY - thickness, z1);
     wallUvs.push(distance, 1, distance + segLen, 1, distance + segLen, 0, distance, 0);
-    wallIndices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    if (flipWalls) wallIndices.push(base, base + 2, base + 1, base, base + 3, base + 2);
+    else wallIndices.push(base, base + 1, base + 2, base, base + 2, base + 3);
     distance += segLen;
   }
   const walls = new THREE.BufferGeometry();

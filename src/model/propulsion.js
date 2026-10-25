@@ -10,35 +10,15 @@
 
 import * as THREE from "three";
 import { MACHINERY } from "./constants.js";
+import { hullKeelYAt } from "./hull.js";
 import { addBox, addCylinder, addRailing, addRoundedBox, cylinderBetween } from "./geometry.js";
 
 const FLOOR_Y = -7.9; // 机械区花钢板
 const FLOOR_TOP = FLOOR_Y + 0.13;
 const MACH_TOP_Y = 7.4; // 机械区顶（机库甲板结构下缘）
 
-/** 艉部船底近似型值（取自 hull.js 的站线数据，用于轴支架与舵的落位） */
-const KEEL_PROFILE = [
-  [88, -11.75],
-  [104, -11.6],
-  [118, -11.35],
-  [130, -10.95],
-  [140, -10.3],
-  [148, -9.2],
-  [154, -7.6],
-  [159, -5.0],
-];
-
-function keelYAt(z) {
-  if (z <= KEEL_PROFILE[0][0]) return KEEL_PROFILE[0][1];
-  for (let i = 0; i < KEEL_PROFILE.length - 1; i++) {
-    const [z0, y0] = KEEL_PROFILE[i];
-    const [z1, y1] = KEEL_PROFILE[i + 1];
-    if (z >= z0 && z <= z1) {
-      return THREE.MathUtils.lerp(y0, y1, (z - z0) / (z1 - z0));
-    }
-  }
-  return KEEL_PROFILE[KEEL_PROFILE.length - 1][1];
-}
+/** 船底型值直接取自 hull.js 的龙骨曲面（不再复制手写站线） */
+const keelYAt = hullKeelYAt;
 
 /* ── 螺旋桨 ───────────────────────────────────────────────── */
 

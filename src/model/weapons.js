@@ -16,23 +16,18 @@
  */
 
 import * as THREE from "three";
-import { SHIP, deckHalfWidthAt } from "./constants.js";
+import { SHIP, deckEdgeAt } from "./constants.js";
 import { addBox, addCylinder, addRailing, addRoundedBox, cylinderBetween } from "./geometry.js";
 import { hullSurfaceX } from "./hull.js";
 
 const TAU = Math.PI * 2;
 const DEG = THREE.MathUtils.degToRad;
 
-/** 指定 z 处的飞行甲板外缘 x（带舷别符号） */
-function deckEdgeXAt(side, z) {
-  return side * deckHalfWidthAt(z);
-}
-
 /**
- * 斜撑落点高度：取 y≈9.4 m 的直舷段，
- * 既避开舷侧救生艇舱口（z=±64、y≈10…14.4）与外板开口，又紧邻船壳。
+ * 斜撑落点高度：取折角线以下 7.2 m 的直舷段，
+ * 既避开舷侧救生艇舱口与外板开口，又紧邻船壳。
  */
-const STRUT_LANDING_Y = 9.4;
+const STRUT_LANDING_Y = SHIP.hullTopY - 7.2;
 
 /** 平台面比飞行甲板面低 6 cm：既坐在甲板高度，又不与甲板贴图共面闪烁 */
 const PLATFORM_TOP = SHIP.deckY - 0.06;
@@ -40,52 +35,29 @@ const PLATFORM_T = 0.86;
 const PLATFORM_BOTTOM = PLATFORM_TOP - PLATFORM_T;
 
 /**
- * 舷侧安装位。
- * deckEdgeX：该平台纵向范围内最靠内的甲板外缘（取自 DECK_OUTLINE），
- *            平台内缘再向船内嵌入 1.1 m，保证整条内缘都压在甲板结构下面。
+ * 舷侧安装位。位置全部由新的飞行甲板轮廓推导：
+ * deckEdgeX 取该平台纵向范围内最靠内的甲板外缘（避免平台与舷侧升降机井冲突），
+ * 平台内缘再向船内嵌入 1.1 m，保证整条内缘都压在甲板结构下面。
  */
 const SITES = [
-  {
-    id: "seasparrow:1",
-    kind: "launcher",
-    side: 1,
-    x: 37.5,
-    z: -108,
-    deckEdgeX: 30.4,
-    length: 11.6,
-    phase: 0.0,
-  },
-  {
-    id: "seasparrow:2",
-    kind: "launcher",
-    side: -1,
-    x: -40.6,
-    z: 64,
-    deckEdgeX: -38.4,
-    length: 11.6,
-    phase: 2.1,
-  },
-  {
-    id: "ciws:1",
-    kind: "ciws",
-    side: 1,
-    x: 39.5,
-    z: 140,
-    deckEdgeX: 36.2,
-    length: 7.6,
-    phase: 0.9,
-  },
-  {
-    id: "ciws:2",
-    kind: "ciws",
-    side: -1,
-    x: -35.0,
-    z: -128,
-    deckEdgeX: -27.7,
-    length: 7.6,
-    phase: 3.4,
-  },
-];
+  { id: "seasparrow:1", kind: "launcher", side: 1, z: -96, length: 11.6, phase: 0.0 },
+  { id: "seasparrow:2", kind: "launcher", side: -1, z: 46, length: 11.6, phase: 2.1 },
+  { id: "ciws:1", kind: "ciws", side: 1, z: 132, length: 7.6, phase: 0.9 },
+  { id: "ciws:2", kind: "ciws", side: -1, z: -124, length: 7.6, phase: 3.4 },
+].map((site) => {
+  const zA = site.z - site.length / 2;
+  const zB = site.z + site.length / 2;
+  let edge = deckEdgeAt(site.z, site.side);
+  for (let z = zA; z <= zB; z += 0.5) {
+    const value = deckEdgeAt(z, site.side);
+    edge = site.side > 0 ? Math.min(edge, value) : Math.max(edge, value);
+  }
+  return {
+    ...site,
+    deckEdgeX: edge,
+    x: edge + site.side * 3.3,
+  };
+});
 
 /* ── 舷侧平台 ─────────────────────────────────────────────── */
 
@@ -128,8 +100,8 @@ function buildSponson(parent, M, site) {
   const pOut = xOut - side * 0.3;
   const zA = z - length / 2 + 0.24;
   const zB = z + length / 2 - 0.24;
-  const edgeA = deckEdgeXAt(side, zA) + side * 0.35;
-  const edgeB = deckEdgeXAt(side, zB) + side * 0.35;
+  const edgeA = deckEdgeAt(zA, side) + side * 0.35;
+  const edgeB = deckEdgeAt(zB, side) + side * 0.35;
   addRailing(
     group,
     [
@@ -158,12 +130,12 @@ function buildSponson(parent, M, site) {
       group,
       M.steelDark,
       [xOut - side * 0.9, PLATFORM_BOTTOM - 0.9, zs],
-      [site.deckEdgeX - side * 0.5, 18.35, zs],
+      [site.deckEdgeX - side * 0.5, SHIP.deckUndersideY - 1.05, zs],
       0.14,
       { radialSegments: 6 },
     );
     // 舷侧加强复板
-    addBox(group, M.steel, 0.32, 2.2, 2.4, hullX + side * 0.03, 10.1, zs, { castShadow: false });
+    addBox(group, M.steel, 0.32, 2.2, 2.4, hullX + side * 0.03, STRUT_LANDING_Y + 0.5, zs, { castShadow: false });
   });
 
   return { group, xIn, xOut, topY: PLATFORM_TOP };
