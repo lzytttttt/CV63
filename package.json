@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "description": "USS Kitty Hawk CV-63 procedural three.js workbench: nine functional blocks, exploded view and flight-deck motion sequences",
+  "license": "MIT",
+  "author": "lzytttttt",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5175",
