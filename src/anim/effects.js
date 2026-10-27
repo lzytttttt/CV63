@@ -362,13 +362,32 @@ export function createEffects(ctx = {}) {
     root.add(system.points);
   }
 
+  // 战损爆点：深色烟 + 橙色火团，与蒸汽池分开，避免相互覆盖
+  const impacts = [];
+  for (let i = 0; i < 2; i++) {
+    const system = createParticleSystem({
+      max: MAX_BURST,
+      map: softMap,
+      blending: THREE.NormalBlending,
+      colorA: 0x1b2226,
+      colorB: 0xffa25a,
+      renderOrder: 44,
+      opacity: 0.95,
+    });
+    system.pending = null;
+    impacts.push(system);
+    root.add(system.points);
+  }
+
   const systems = [smoke, spray];
   for (let i = 0; i < bursts.length; i++) systems.push(bursts[i]);
+  for (let i = 0; i < impacts.length; i++) systems.push(impacts[i]);
 
   /* 连续发射器状态 */
   const smokeSources = [];
   let spraySource = null;
   let burstCursor = 0;
+  let impactCursor = 0;
 
   /* 点尺寸换算（世界直径 → 像素），随窗口/像素比变化刷新 */
   let pointScale = 900;
@@ -530,6 +549,27 @@ export function createEffects(ctx = {}) {
     };
   }
 
+  /** 战损命中：深烟 + 火光，位置为世界坐标 */
+  function impactBurst(position, options = {}) {
+    const count = Math.max(1, Math.min(Math.round(options.count ?? 26), MAX_BURST));
+    const spread = options.spread ?? 5;
+    readVec(position, scratchVec);
+    const system = impacts[impactCursor % impacts.length];
+    impactCursor = (impactCursor + 1) % impacts.length;
+    system.reset();
+    system.pending = {
+      x: scratchVec.x,
+      y: scratchVec.y,
+      z: scratchVec.z,
+      spread,
+      duration: Math.max(0.08, options.duration ?? 0.55),
+      remaining: count,
+      elapsed: 0,
+      acc: 0,
+      rate: count / Math.max(0.08, options.duration ?? 0.55),
+    };
+  }
+
   /** 开启/移动舰艏水雾 */
   function bowSpray(position) {
     readVec(position, scratchVec);
@@ -547,6 +587,7 @@ export function createEffects(ctx = {}) {
     smokeSources.length = 0;
     spraySource = null;
     for (let i = 0; i < bursts.length; i++) bursts[i].pending = null;
+    for (let i = 0; i < impacts.length; i++) impacts[i].pending = null;
   }
 
   /* ── 主循环 ── */
@@ -574,6 +615,7 @@ export function createEffects(ctx = {}) {
     smoke.update(step, SMOKE_CFG);
     spray.update(step, SPRAY_CFG);
     for (let i = 0; i < bursts.length; i++) bursts[i].update(step, STEAM_CFG);
+    for (let i = 0; i < impacts.length; i++) impacts[i].update(step, SMOKE_CFG);
   }
 
   let unregister = null;
@@ -600,6 +642,7 @@ export function createEffects(ctx = {}) {
     root,
     funnelSmoke,
     steamBurst,
+    impactBurst,
     bowSpray,
     stopFunnel,
     stopSpray,

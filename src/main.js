@@ -12,6 +12,7 @@ import { Animator } from "./anim/animator.js";
 import { createSequences } from "./anim/sequences.js";
 import { buildSea } from "./model/sea.js";
 import { createEffects } from "./anim/effects.js";
+import { createCombatGame } from "./game/index.js";
 import { SHIP, DECK_BOUNDS, DECK_OUTLINE, ELEVATORS, ISLAND, ANGLED_DECK, CATAPULTS } from "./model/constants.js";
 
 /* ══════════════════════════════════════════════════════════════
@@ -66,6 +67,7 @@ let effects;
 let sea;
 let api;
 let sequenceApi;
+let combat;
 let seaAllowed = true;
 
 let scene;
@@ -477,6 +479,7 @@ function buildShipScene() {
   buildAnimatorApi();
   createSequences(api);
   setupMotionUI();
+  setupCombatMode();
 
   // 常驻动效：锅炉烟、艏波（锚点取自舰岛与舰艏实际位置）
   const island = ship.handles.island;
@@ -494,8 +497,8 @@ function buildShipScene() {
     app: window.__CV63,
     animator,
     api,
-    play: (name) => playSequence(name),
-    stop: () => animator.stop(),
+    game: combat,
+    play: (name) => playSequence(name),    stop: () => animator.stop(),
     view: (key) => applyView(key),
     state,
     /** 调试/截图用：脱离 rAF 手动推进模拟并渲染一帧 */
@@ -598,6 +601,73 @@ function buildAnimatorApi() {
   };
   animator.api = api;
   sequenceApi = api;
+}
+
+/* ── v1.1 作战模式 ───────────────────────────────────────── */
+
+const COMBAT_DECK_CAM = { position: [158, 96, 198], target: [0, 34, -4] };
+const COMBAT_WIDE_CAM = { position: [372, 188, 420], target: [0, 18, 0] };
+
+function setupCombatMode() {
+  const button = document.getElementById("combat-button");
+  if (!button) return;
+
+  combat = createCombatGame({
+    ship,
+    api,
+    effects,
+    camera,
+    scene,
+    controls,
+    hooks: {
+      enter: () => {
+        animator?.stop();
+        setCinematic(false);
+        helpModal.classList.remove("is-open");
+        helpModal.setAttribute("aria-hidden", "true");
+        clearSelection();
+        PARTS.forEach((part) => {
+          const group = ship.groups[part.id];
+          if (group) group.visible = true;
+        });
+        state.isolatedId = null;
+        setSection(false, { silent: true });
+        setExplode(0, { silent: true });
+        seaAllowed = true;
+        if (sea?.root) sea.root.visible = true;
+        controls.autoRotate = false;
+        controls.enabled = false;
+        updateAssemblyVisibilityUI();
+        updateLabels();
+        document.body.classList.add("is-combat");
+        flyTo(COMBAT_WIDE_CAM.position, COMBAT_WIDE_CAM.target, 1.2);
+      },
+      exit: () => {
+        document.body.classList.remove("is-combat");
+        document.body.classList.remove("cic-deck-view");
+        controls.enabled = true;
+        applyView("overview");
+        updateLabels();
+        updateSelectionHelper();
+        showToast("已返回结构工作台 / WORKBENCH");
+      },
+      deckView: (enabled) => {
+        controls.enabled = enabled;
+        if (enabled) {
+          flyTo(COMBAT_DECK_CAM.position, COMBAT_DECK_CAM.target, 1.2);
+        } else {
+          flyTo(COMBAT_WIDE_CAM.position, COMBAT_WIDE_CAM.target, 1.2);
+        }
+      },
+    },
+  });
+
+  button.addEventListener("click", () => {
+    helpModal.classList.remove("is-open");
+    helpModal.setAttribute("aria-hidden", "true");
+    controls.enabled = false;
+    combat.enter();
+  });
 }
 
 /* ── 动效面板 ─────────────────────────────────────────────── */
@@ -1270,6 +1340,7 @@ function setupInteractionEvents() {
 
   window.addEventListener("keydown", (event) => {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+    if (document.body.classList.contains("is-combat")) return;
     const key = event.key.toLowerCase();
     if (key === "escape") {
       if (helpModal.classList.contains("is-open")) closeHelp();
@@ -1432,13 +1503,20 @@ function simulate(dt) {
   updateCameraTween(performance.now());
   updateExplode(dt);
   animator?.update(dt);
-  updateHover();
+  if (combat?.active) {
+    combat.update(dt);
+  } else {
+    updateHover();
+  }
   controls.update();
   updateReadoutCoordinates();
   cullLabels();
 }
 
 function renderFrame() {
+  // 战术台是覆盖全屏的 CIC，三维画面被完全遮住；此时跳过 3D 渲染，
+  // 只在“甲板视角”或退出作战后渲染，避免在低端设备上做无效开销。
+  if (combat?.active && !combat.ui?.isDeckView()) return;
   composer.render();
   labelRenderer.render(scene, camera);
 }

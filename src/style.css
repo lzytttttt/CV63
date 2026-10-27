@@ -417,6 +417,61 @@ a {
   animation: live-pulse 2.8s ease-in-out infinite;
 }
 
+/* v1.1 作战入口 */
+.combat-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 178, 92, 0.36);
+  background:
+    linear-gradient(135deg, rgba(255, 178, 92, 0.14), transparent 58%),
+    rgba(12, 20, 23, 0.82);
+  transition: border-color 180ms, background 180ms, color 180ms;
+}
+
+.combat-button:hover {
+  border-color: rgba(255, 200, 130, 0.72);
+  background:
+    linear-gradient(135deg, rgba(255, 178, 92, 0.22), transparent 58%),
+    rgba(20, 32, 36, 0.92);
+}
+
+.combat-button-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px rgba(255, 178, 92, 0.75);
+  animation: live-pulse 1.8s ease-in-out infinite;
+}
+
+.combat-button-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.combat-button-copy b {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--amber-soft);
+}
+
+.combat-button-copy small {
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+body.is-combat .toast {
+  display: none;
+}
+
 @keyframes live-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
